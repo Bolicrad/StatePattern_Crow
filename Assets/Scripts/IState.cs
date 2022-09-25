@@ -5,4 +5,6 @@ public interface IState
     IState Jump();
     IState Dash();
     IState Attack();
+
+    IState Stop();
 }
