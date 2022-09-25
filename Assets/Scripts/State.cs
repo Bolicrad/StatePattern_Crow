@@ -1,6 +1,8 @@
 public interface IState
 {
-    void Jump();
-    void Walk();
-    void Dash();
+    IState Walk();
+    IState Run();
+    IState Jump();
+    IState Dash();
+    IState Attack();
 }

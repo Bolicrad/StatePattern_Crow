@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b194f808b1af6499c93410e504af42, type: 3}
+  m_Name: Crow_Atlas
+  m_EditorClassIdentifier: 
+  atlasFile: {fileID: 4900000, guid: d21c27ac9e3a741f3a4a2325f4afbde3, type: 3}
+  materials:
+  - {fileID: 2100000, guid: f3a0effd4eba9461a90fa30c724a1fb9, type: 2}
+  - {fileID: 2100000, guid: 018b5c5bc81d24791ab92c0058f5f5b7, type: 2}
