@@ -42,6 +42,20 @@ public class CrowController : MonoBehaviour
         }
     }
 
+    private IState _vertical;
+
+    public IState Vertical
+    {
+        get => _vertical;
+        set
+        {
+            if (value == _vertical) return;
+            _vertical = value;
+        }
+    }
+
+    public bool isLanded;
+
     //The reference of Crow Spine Animation
     public SkeletonAnimation spine;
     
@@ -101,6 +115,7 @@ public class CrowController : MonoBehaviour
     void Update()
     {
         State.Update();
+        Vertical?.Update();
         Horizontal?.Update();
 
         HandleInput();

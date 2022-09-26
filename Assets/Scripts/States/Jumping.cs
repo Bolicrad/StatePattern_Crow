@@ -1,4 +1,4 @@
-public class Jumping : Idle
+public class Jumping : Falling
 {
     public Jumping(CrowController controller) : base(controller) { }
     
@@ -7,33 +7,24 @@ public class Jumping : Idle
         //Detect falling situation here
     }
 
-    public override IState Walk()
-    {
-        CrowController.Horizontal = CrowController.Walking;
-        //Cannot transit from Jumping to Walking
-        return null;
-    }
-
-    public override IState Run()
-    {
-        CrowController.Horizontal = CrowController.Running;
-        //Cannot transit from Jumping to Running
-        return null;
-    }
-    
-    public override IState Stop()
-    {
-        CrowController.Horizontal = null;
-        //Cannot transit from Jumping to Idle
-        return null;
-    }
-
     public override IState Jump()
     {
         //Double Jump
         return CrowController.DoubleJumping;
     }
-    
+
+    public override IState Fall()
+    {
+        return new Falling(CrowController);
+    }
+
+    public override IState Land()
+    {
+        
+        //Cannot Land when jumping up
+        return null;
+    }
+
     public override void OnEnter(IState previous)
     {
         Previous = previous;
@@ -46,7 +37,7 @@ public class Jumping : Idle
         CrowController.spine.AnimationState.SetAnimation(0, "Jump_start", false);
     }
 
-    protected void Launch()
+    protected virtual void Launch()
     {
         CrowController.spine.AnimationState.AddAnimation(0, "Jump_up", true, 0f);
         

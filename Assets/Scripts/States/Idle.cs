@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Spine;
-using Spine.Unity;
-
 public class Idle : IState
 {
     protected readonly CrowController CrowController;
@@ -31,26 +25,17 @@ public class Idle : IState
 
     public virtual IState Jump()
     {
-        CrowController.Horizontal = this;
         return CrowController.Jumping;
     }
 
     public virtual IState Dash()
     {
-        //_crowController.spine.AnimationState.SetAnimation(0, "Dash", false);
-        
-        //Dash Logic
-        
-        return CrowController.Dashing;
+        return new Dashing(CrowController);
     }
 
     public virtual IState Attack()
     {
-        //_crowController.spine.AnimationState.SetAnimation(0, "Attack1", false);
-        
-        //Attack Logic
-        
-        return CrowController.Attacking;
+        return new Attacking(CrowController);
     }
 
     public virtual IState Fall()
