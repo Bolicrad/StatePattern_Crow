@@ -1,43 +1,95 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine;
+using Spine.Unity;
 
 public class Idle : IState
 {
-    private readonly CrowController _crowController;
-    
+    protected readonly CrowController CrowController;
+    protected IState Previous;
+
     public Idle(CrowController controller)
     {
-        _crowController = controller;
+        CrowController = controller;
     }
 
-    public IState Walk()
+    public virtual IState Walk()
     {
-        return _crowController.Walking;
+        return CrowController.Walking;
     }
 
-    public IState Run()
+    public virtual IState Run()
     {
-        return _crowController.Running;
+        return CrowController.Running;
     }
 
-    public IState Jump()
+    public virtual IState Stop()
     {
-        return _crowController.Jumping;
+        return CrowController.Idle;
     }
 
-    public IState Dash()
+    public virtual IState Jump()
     {
-        return _crowController.Dashing;
+        CrowController.Horizontal = this;
+        return CrowController.Jumping;
     }
 
-    public IState Attack()
+    public virtual IState Dash()
     {
-        return _crowController.Attacking;
+        //_crowController.spine.AnimationState.SetAnimation(0, "Dash", false);
+        
+        //Dash Logic
+        
+        return CrowController.Dashing;
     }
 
-    public IState Stop()
+    public virtual IState Attack()
     {
-        return _crowController.Idle;
+        //_crowController.spine.AnimationState.SetAnimation(0, "Attack1", false);
+        
+        //Attack Logic
+        
+        return CrowController.Attacking;
+    }
+
+    public virtual IState Fall()
+    {
+        return new Falling(CrowController);
+    }
+
+    public virtual IState Land()
+    {
+        //No response to land when landed or jumping up
+        return null;
+    }
+
+    public virtual void OnEnter(IState previous)
+    {
+        Previous = previous;
+        var trackEntry = CrowController.spine.AnimationState.GetCurrent(0);
+        if (trackEntry is { Loop: true }) SetAnim();
+        else AddAnim();
+    }
+
+    protected virtual void AddAnim()
+    {
+        CrowController.spine.AnimationState.AddAnimation(0, "idle_1", true,0f);
+    }
+
+    protected virtual void SetAnim()
+    {
+        CrowController.spine.AnimationState.SetAnimation(0, "idle_1", true);
+    }
+
+
+    public virtual void OnExit()
+    {
+        //CrowController.spine.AnimationState.ClearTrack(0);
+    }
+
+    public virtual void Update()
+    {
+        //Count time and change spine anim to idle_2
     }
 }
