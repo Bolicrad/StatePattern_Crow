@@ -2,15 +2,9 @@ public class DoubleJumping : Jumping
 {
     public DoubleJumping(CrowController controller) : base(controller) { }
     
-    public override void Update()
-    {
-        //Detect falling situation here
-    }
-
-    public override IState Jump()
+    public override void Jump()
     {
         //Cannot Jump if already double jumped
-        return null;
     }
 
     protected override void SetAnim()

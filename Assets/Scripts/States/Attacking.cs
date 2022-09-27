@@ -1,47 +1,47 @@
 using Spine;
+using UnityEngine;
+using System;
+using System.Collections;
 
 public class Attacking : Jumping
 {
     public Attacking(CrowController controller) : base(controller) { }
     protected TrackEntry TrackEntry;
+    protected float Timer = 0f;
+    protected float Duration;
 
-    public override IState Jump()
+    public override void Jump()
     {
-        return Previous.Jump();
+        //Cannot Jump while attacking
     }
 
-    public override IState Attack()
+    public override void Attack()
     {
         //Cannot Attack while Attacking
-        return null;
     }
 
-    public override IState Fall()
+    public override void Fall()
     {
-        CrowController.Vertical = new Falling(CrowController);
-        return null;
+        CrowController.Vertical = CrowController.Falling;
     }
 
-    public override IState Land()
+    public override void Land()
     {
         CrowController.Vertical = null;
-        CrowController.isLanded = true;
-        return null;
     }
 
     protected override void SetAnim()
     {
         TrackEntry = CrowController.spine.AnimationState.SetAnimation(0, "Attack1", false);
-        CrowController.Vertical = CrowController.isLanded ? null : Previous;
+        CrowController.Vertical = CrowController.IsLanded ? null : Previous;
     }
 
     protected override void Launch()
     {
-        TrackEntry.Complete += entry =>
-        {
-            CrowController.State = CrowController.Vertical ?? (CrowController.Horizontal ?? CrowController.Idle);
-        };
+        Duration = TrackEntry.Animation.Duration;
+        Timer = 0f;
     }
+    
 
     public override void OnExit()
     {
@@ -50,6 +50,11 @@ public class Attacking : Jumping
 
     public override void Update()
     {
-        // Deal with attacking logics
+        Timer += Time.deltaTime;
+        if (Timer >= Duration)
+        {
+            CrowController.State = CrowController.Vertical ?? (CrowController.Horizontal ?? CrowController.Idle);
+        }
+        CrowController.Vertical?.Update();
     }
 }

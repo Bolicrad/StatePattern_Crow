@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Idle : IState
 {
     protected readonly CrowController CrowController;
@@ -8,47 +10,45 @@ public class Idle : IState
         CrowController = controller;
     }
 
-    public virtual IState Walk()
+    public virtual void Walk()
     {
-        return CrowController.Walking;
+        CrowController.State = CrowController.Walking;
     }
 
-    public virtual IState Run()
+    public virtual void Run()
     {
-        return CrowController.Running;
+        CrowController.State = CrowController.Running;
     }
 
-    public virtual IState Stop()
+    public virtual void Stop()
     {
-        return CrowController.Idle;
+        CrowController.State = CrowController.Idle;
     }
 
-    public virtual IState Jump()
+    public virtual void Jump()
     {
-        CrowController.isLanded = false;
-        return CrowController.Jumping;
+        CrowController.Horizontal = this;
+        CrowController.State = CrowController.Jumping;
     }
 
-    public virtual IState Dash()
+    public virtual void Dash()
     {
-        return new Dashing(CrowController);
+        CrowController.State = CrowController.Dashing;
     }
 
-    public virtual IState Attack()
+    public virtual void Attack()
     {
-        return new Attacking(CrowController);
+        CrowController.State = CrowController.Attacking;
     }
 
-    public virtual IState Fall()
+    public virtual void Fall()
     {
-        CrowController.isLanded = false;
-        return new Falling(CrowController);
+        CrowController.State = CrowController.Falling;
     }
 
-    public virtual IState Land()
+    public virtual void Land()
     {
         //No response to land when landed or jumping up
-        return null;
     }
 
     public virtual void OnEnter(IState previous)
@@ -77,6 +77,9 @@ public class Idle : IState
 
     public virtual void Update()
     {
-        //Count time and change spine anim to idle_2
+        if (CrowController.r_rigidbody.velocity.x != 0f)
+        {
+            CrowController.r_rigidbody.velocity = new Vector2(0, CrowController.r_rigidbody.velocity.y);
+        }
     }
 }

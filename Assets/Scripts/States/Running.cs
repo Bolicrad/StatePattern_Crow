@@ -1,10 +1,10 @@
-public class Running : Idle
+public class Running : Walking
 {
     public Running(CrowController controller) : base(controller) { }
   
     public override void Update()
     {
-        //Deal with running Logic here
+        HorizontalMove(CrowController.runSpeed);
     }
 
     protected override void AddAnim()

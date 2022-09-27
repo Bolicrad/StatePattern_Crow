@@ -1,13 +1,13 @@
 public interface IState
 {
-    IState Walk();
-    IState Run();
-    IState Stop();
-    IState Jump();
-    IState Dash();
-    IState Attack();
-    IState Fall();
-    IState Land();
+    void Walk();
+    void Run();
+    void Stop();
+    void Jump();
+    void Dash();
+    void Attack();
+    void Fall();
+    void Land();
 
     void OnEnter(IState previous);
     void OnExit();

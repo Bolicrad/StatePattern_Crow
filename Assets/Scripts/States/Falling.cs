@@ -3,49 +3,43 @@ public class Falling : Idle
     public Falling(CrowController controller) : base(controller) { }
     
     public override void Update()
-    {
-        //Detect landing situation
+    { 
+        //Landing Logic
+        if (CrowController.IsLanded) CrowController.Land();
+        
+        CrowController.Horizontal?.Update();
     }
 
-    public override IState Walk()
+    public override void Walk()
     {
         CrowController.Horizontal = CrowController.Walking;
-        //Cannot transit from Falling to Walking without landing
-        return null;
     }
     
-    public override IState Run()
+    public override void Run()
     {
         CrowController.Horizontal = CrowController.Running;
-        //Cannot transit from Falling to Running without landing
-        return null;
     }
 
-    public override IState Stop()
+    public override void Stop()
     {
-        CrowController.Horizontal = null;
-        //Cannot transit from Falling to Idle without landing
-        return null;
+        CrowController.Horizontal = CrowController.Idle;
     }
 
-    public override IState Jump()
+    public override void Jump()
     {
         //Jump result depends on Previous Jump result
-        return Previous.Jump();
+        Previous.Jump();
     }
 
-    public override IState Fall()
+    public override void Fall()
     {
         //cannot Enter Falling when it's already falling
-        return null;
     }
     
-    public override IState Land()
+    public override void Land()
     {
-        CrowController.isLanded = true;
-        var result = CrowController.Horizontal ?? CrowController.Idle;
+        CrowController.State = CrowController.Horizontal ?? CrowController.Idle;
         CrowController.Horizontal = null;
-        return result;
     }
 
     protected override void AddAnim()
