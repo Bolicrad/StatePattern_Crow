@@ -42,6 +42,7 @@ public class Falling : Idle
     
     public override IState Land()
     {
+        CrowController.isLanded = true;
         var result = CrowController.Horizontal ?? CrowController.Idle;
         CrowController.Horizontal = null;
         return result;

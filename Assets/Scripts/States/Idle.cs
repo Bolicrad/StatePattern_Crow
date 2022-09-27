@@ -25,6 +25,7 @@ public class Idle : IState
 
     public virtual IState Jump()
     {
+        CrowController.isLanded = false;
         return CrowController.Jumping;
     }
 
@@ -40,6 +41,7 @@ public class Idle : IState
 
     public virtual IState Fall()
     {
+        CrowController.isLanded = false;
         return new Falling(CrowController);
     }
 

@@ -25,13 +25,14 @@ public class Attacking : Jumping
     public override IState Land()
     {
         CrowController.Vertical = null;
+        CrowController.isLanded = true;
         return null;
     }
 
     protected override void SetAnim()
     {
         TrackEntry = CrowController.spine.AnimationState.SetAnimation(0, "Attack1", false);
-        CrowController.Vertical = CrowController.isLanded ? Previous : null;
+        CrowController.Vertical = CrowController.isLanded ? null : Previous;
     }
 
     protected override void Launch()

@@ -108,6 +108,7 @@ public class CrowController : MonoBehaviour
 
 
         State = Idle;
+        isLanded = true;
 
     }
 
@@ -127,8 +128,8 @@ public class CrowController : MonoBehaviour
         if (Input.GetButtonDown("Jump")) Jump();
 
         //Dash/Attack Logic
-        // if (Input.GetButtonDown("Fire1")) Dash();
-        // if (Input.GetButtonDown("Fire2")) Attack();
+        if (Input.GetButtonDown("Fire1")) Dash();
+        if (Input.GetButtonDown("Fire2")) Attack();
         
         //Horizontal Logic
         var horizontal = Input.GetAxis("Horizontal");

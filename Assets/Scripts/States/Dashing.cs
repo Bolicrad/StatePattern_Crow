@@ -30,7 +30,8 @@ public class Dashing : Attacking
 
     protected override void SetAnim()
     {
+        CrowController.spine.AnimationState.ClearTrack(0);
         TrackEntry = CrowController.spine.AnimationState.SetAnimation(0, "Dash", false);
-        CrowController.Vertical = CrowController.isLanded ? new Falling(CrowController) : null;
+        CrowController.Vertical = CrowController.isLanded ? null : new Falling(CrowController);
     }
 }
