@@ -9,7 +9,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: bbb252cf22e774f5a916831f98644336, type: 3}
   m_Name: TypeSettings
   m_EditorClassIdentifier: Assembly-CSharp::GameTypeSettings
-  types: []
+  types:
+  - typeId: 1
+    typeIcon: {fileID: 3286163911610860551, guid: e80e343efb02a4502881637b42effb4a, type: 3}
+    resistList: 0
+    weakList: 0
+    noEffectList: 0
+  - typeId: 2
+    typeIcon: {fileID: 3286163911610860551, guid: 49330a110ee674df484c3ea5f252e446, type: 3}
+    resistList: 18
+    weakList: 4
+    noEffectList: 0
+  - typeId: 4
+    typeIcon: {fileID: 3286163911610860551, guid: ef7f135ca7d874d2bbdf8bf01a3c0e50, type: 3}
+    resistList: 6
+    weakList: 24
+    noEffectList: 0
+  - typeId: 8
+    typeIcon: {fileID: 3286163911610860551, guid: c2e1e4cd3021945b99190a6e93e8866e, type: 3}
+    resistList: 8
+    weakList: 0
+    noEffectList: 0
+  - typeId: 16
+    typeIcon: {fileID: 3286163911610860551, guid: 3821db812426b4135aa7f3ccfb38b851, type: 3}
+    resistList: 28
+    weakList: 2
+    noEffectList: 0

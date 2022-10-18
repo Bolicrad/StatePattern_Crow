@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 public class CrowController : MonoBehaviour
@@ -69,6 +70,7 @@ public class CrowController : MonoBehaviour
     //The reference of Crow Components
     public SkeletonAnimation spine;
     public Rigidbody2D r_rigidbody;
+    public Collider2D attacker;
     
     //Parameters
     public float walkSpeed;
@@ -152,7 +154,11 @@ public class CrowController : MonoBehaviour
         if (Input.GetButtonDown("Jump")) Jump();
 
         //Dash/Attack Logic
-        if (Input.GetButtonDown("Fire1")) Attack();
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            Attack();
+        }
         if (Input.GetButtonDown("Fire2")) Dash();
 
         //Horizontal Logic

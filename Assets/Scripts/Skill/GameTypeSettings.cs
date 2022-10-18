@@ -7,14 +7,19 @@ using UnityEngine;
 public class GameTypeSettings : ScriptableObject
 {
     public List<GameType> types;
-
-    public GameType GetTypeData(GameTypeEnum id)
+    public List<GameType> GetTypeData(GameTypeEnum id)
     {
-        foreach (var gameType in types.Where(gameType => gameType.typeId == id))
+        return types.Where(gameType => id.HasFlag(gameType.typeId)).ToList();
+    }
+
+    public GameType GetType(GameTypeEnum id)
+    {
+        GameType returnType = default;
+        foreach (var type in types.Where(type => type.typeId == id))
         {
-            return gameType;
+            returnType = type;
         }
-        return new GameType();
+        return returnType;
     }
 }
 
@@ -32,7 +37,9 @@ public struct GameType
 public enum GameTypeEnum
 {
     None = 0,
-    Grass = 1 << 0,
+    Normal = 1 << 0,
     Fire = 1 << 1,
     Water = 1 << 2,
+    Electric = 1 << 3,
+    Grass = 1 << 4,
 }

@@ -41,16 +41,20 @@ public class Attacking : Jumping
         Duration = TrackEntry.Animation.Duration;
         Timer = 0f;
     }
-    
 
     public override void OnExit()
     {
-        
+        CrowController.attacker.enabled = false;
     }
 
     public override void Update()
     {
         Timer += Time.deltaTime;
+        if (Timer >= 0.2f && CrowController.attacker.enabled == false)
+        {
+            CrowController.attacker.enabled = true;
+        }
+
         if (Timer >= Duration)
         {
             CrowController.State = CrowController.Vertical ?? (CrowController.Horizontal ?? CrowController.Idle);
