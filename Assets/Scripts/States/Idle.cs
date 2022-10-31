@@ -33,12 +33,12 @@ public class Idle : IState
 
     public virtual void Dash()
     {
-        CrowController.State = CrowController.Dashing;
+        if(CrowController.canDash)CrowController.State = CrowController.Dashing;
     }
 
     public virtual void Attack()
     {
-        CrowController.State = CrowController.Attacking;
+        if(CrowController.canAttack)CrowController.State = CrowController.Attacking;
     }
 
     public virtual void Fall()

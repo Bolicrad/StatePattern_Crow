@@ -58,11 +58,17 @@ public class CrowController : MonoBehaviour
         }
     }
 
-    public bool IsLanded => Physics2D.Raycast(
-        (Vector2)transform.position + Vector2.up*0.05f, 
-        Vector2.down, 
-        0.1f, 
-        groundLayer);
+    private bool _isLandedBuffer;
+    public bool IsLanded =>
+        Physics2D.Raycast(
+            (Vector2)transform.position + Vector2.up * 0.05f,
+            Vector2.down,
+            0.1f,
+            groundLayer);
+
+    public bool canDoubleJump;
+    public bool canDash;
+    public bool canAttack;
 
     public float SpeedY => r_rigidbody.velocity.y;
     public float LastSpeedY { get; set; }
@@ -137,6 +143,7 @@ public class CrowController : MonoBehaviour
 
         State = Idle;
         LastSpeedY = 0;
+        _isLandedBuffer = IsLanded;
 
     }
 
@@ -152,6 +159,15 @@ public class CrowController : MonoBehaviour
     {
         //Jump-Falling Logic
         if (Input.GetButtonDown("Jump")) Jump();
+        else if (IsLanded != _isLandedBuffer)
+        {
+            if (_isLandedBuffer)
+            {
+                //Now not landed, not jumped, which means walked to falling
+                Fall();
+            }
+        }
+        _isLandedBuffer = IsLanded;
 
         //Dash/Attack Logic
         if (Input.GetButtonDown("Fire1"))

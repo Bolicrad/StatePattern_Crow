@@ -19,7 +19,7 @@ public class Jumping : Falling
     public override void Jump()
     {
         //Double Jump
-        CrowController.State = CrowController.DoubleJumping;
+        if(CrowController.canDoubleJump) CrowController.State = CrowController.DoubleJumping;
     }
 
     public override void Fall()
