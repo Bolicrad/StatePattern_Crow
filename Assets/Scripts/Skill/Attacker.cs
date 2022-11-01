@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VectorGraphics;
 using UnityEngine;
@@ -6,49 +8,67 @@ using UnityEngine;
 public class Attacker : MonoBehaviour
 {
     private Collider2D _collider;
-    [SerializeField]private SkillDataSetting skillSetting;
-    [SerializeField]private SkillData defaultSkill;
+    [SerializeField]private List<SkillData> defaultSkills;
     [SerializeField] private GameTypeSettings typeSettings;
+    [SerializeField] private GameObject skillPanel;
     private LinkedListNode<SkillData> _currentSkillNode;
-    private LinkedList<SkillData> _skillList;
-    private GameObject _canvas;
+    public LinkedList<SkillData> skillList;
+    
 
     // Start is called before the first frame update
-    void Start()
+    
+
+    public void Init()
     {
+        skillPanel.SetActive(true);
         _collider = GetComponent<Collider2D>();
-        _canvas = GameObject.Find("Canvas");
-        _skillList = new LinkedList<SkillData>(skillSetting.Skills);
-        _currentSkillNode = _skillList.First;
-        UpdateSkillDisplay(_currentSkillNode?.Value ?? defaultSkill);
+        skillList = new LinkedList<SkillData>(defaultSkills);
+        SetCurrentSkill(skillList.First);
     }
 
     private void UpdateSkillDisplay(SkillData data)
     {
         //Modify the display of Skill
-        _canvas.GetComponentInChildren<SVGImage>().sprite = typeSettings.GetType(data.typeEnum).typeIcon;
-        _canvas.GetComponentInChildren<TMP_Text>().text = $"{data.skillName}:{data.power}";
+        skillPanel.GetComponentInChildren<SVGImage>().sprite = typeSettings.GetType(data.typeEnum).typeIcon;
+        skillPanel.GetComponentInChildren<TMP_Text>().text = $"{data.skillName}:{data.power}";
     }
 
     public void NextSkill(bool isPrevious = false)
     {
         if (isPrevious)
         {
-            _currentSkillNode = _currentSkillNode?.Previous ?? _skillList.Last;
+            SetCurrentSkill(_currentSkillNode?.Previous ?? skillList.Last);
         }
-        else _currentSkillNode = _currentSkillNode?.Next ?? _skillList.First;
-        UpdateSkillDisplay(_currentSkillNode?.Value ?? defaultSkill);
+        else SetCurrentSkill(_currentSkillNode?.Next ?? skillList.First);
     }
+
+    private void SetCurrentSkill(LinkedListNode<SkillData> node)
+    {
+        if (node == _currentSkillNode) return;
+        if(_currentSkillNode!=null)GetComponent<AudioSource>().Play();
+        _currentSkillNode = node;
+        UpdateSkillDisplay(node.Value);
+    }
+    
+    public void AddSkill(SkillData data)
+    {
+        if (skillList.Any(skillData => data.skillName == skillData.skillName))
+        {
+            return;
+        }
+        skillList.AddLast(data);
+        SetCurrentSkill(skillList.Last);
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (_collider == col || col.CompareTag("Player")) return;
         if (col.TryGetComponent<Receiver>(out var opponent))
         {
-            opponent.DealDamage(_currentSkillNode?.Value ?? defaultSkill);
-            GetComponent<AudioSource>().Play();
+            opponent.DealDamage(_currentSkillNode.Value);
         }
     }
-
+    
 
     // Update is called once per frame
     void Update()
@@ -56,13 +76,11 @@ public class Attacker : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             NextSkill(true);
-            _canvas.GetComponent<AudioSource>().Play();
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             NextSkill();
-            _canvas.GetComponent<AudioSource>().Play();
         }
     }
 }

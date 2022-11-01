@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,11 @@ public class Receiver : MonoBehaviour
     [SerializeField] private SpriteRenderer type0;
     [SerializeField] private SpriteRenderer type1;
     [SerializeField] private SpriteRenderer health;
+    [SerializeField] private AudioClip normalAudioClip;
+    [SerializeField] private AudioClip superAudioClip;
+    [SerializeField] private AudioClip notGoodAudioClip;
+    [SerializeField] private AudioClip noEffectAudioClip;
+    private AudioSource audioSource;
     private LinkedList<GameType> _types;
     private int _hp;
 
@@ -33,6 +39,7 @@ public class Receiver : MonoBehaviour
     {
         HP = maxHp;
         _types = new LinkedList<GameType>(typeSettings.GetTypeData(typeId));
+        audioSource = transform.parent.GetComponent<AudioSource>();
         type0.sprite = _types.First.Value.typeIcon;
         type1.sprite = _types.First.Next?.Value.typeIcon;
     }
@@ -71,13 +78,30 @@ public class Receiver : MonoBehaviour
 
     public void CreateDamageUI(int damage, EffectType effectType)
     {
-        if (effectType == EffectType.NoEffect) return;
+        if (effectType == EffectType.NoEffect)
+        {
+            return;
+        }
         Debug.Log($"{damage} damage");
         var numObj = Instantiate(damageNumberPrefab, GameObject.Find("DamageTextParent").transform, true);
         if (!numObj.TryGetComponent<DamageText>(out var damageText)) return;
         damageText.SetPosition(transform.position);
         damageText.Init(damage, effectType);
         
+    }
+
+    public void PlayDamageSound(EffectType effectType)
+    {
+        AudioClip clip = effectType switch
+        {
+            EffectType.Normal => normalAudioClip,
+            EffectType.Super => superAudioClip,
+            EffectType.NoEffect => noEffectAudioClip,
+            EffectType.NotGood => notGoodAudioClip,
+            _ => null
+        };
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
     public void DealDamage(SkillData attackData)
@@ -116,9 +140,12 @@ public class Receiver : MonoBehaviour
             }
             damage = (int)(attackData.power * effect);
         }
-        
+
+        PlayDamageSound(effectType);
         CreateDamageUI(damage, effectType);
         HP -= damage;
+        
+
     }
 
     public float CalculateEffective(GameTypeEnum attackerTypeId, GameType receiverType, out int flag)

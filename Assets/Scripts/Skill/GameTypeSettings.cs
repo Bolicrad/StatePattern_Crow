@@ -42,4 +42,5 @@ public enum GameTypeEnum
     Water = 1 << 2,
     Electric = 1 << 3,
     Grass = 1 << 4,
+    Ground = 1 << 5,
 }

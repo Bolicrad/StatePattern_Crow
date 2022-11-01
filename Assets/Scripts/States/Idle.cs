@@ -27,8 +27,11 @@ public class Idle : IState
 
     public virtual void Jump()
     {
-        CrowController.Horizontal = this;
-        CrowController.State = CrowController.Jumping;
+        if (CrowController.canJump)
+        {
+            CrowController.Horizontal = this;
+            CrowController.State = CrowController.Jumping;
+        }
     }
 
     public virtual void Dash()

@@ -38,3 +38,8 @@ MonoBehaviour:
     resistList: 28
     weakList: 2
     noEffectList: 0
+  - typeId: 32
+    typeIcon: {fileID: 3286163911610860551, guid: b56161bd7468a4d809f966b564e8afe6, type: 3}
+    resistList: 0
+    weakList: 20
+    noEffectList: 8

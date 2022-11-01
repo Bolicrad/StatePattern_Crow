@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Attacker
   - Receiver
+  - Unlocker
   layers:
   - Default
   - TransparentFX
